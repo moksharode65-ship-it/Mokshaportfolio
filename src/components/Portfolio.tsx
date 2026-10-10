@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Play, Menu, X, ExternalLink } from "lucide-react";
 import Logo from "./Logo";
 import AmbientBackground from "./AmbientBackground";
@@ -34,14 +34,7 @@ const SERVICES = [
 export default function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [videoNotice, setVideoNotice] = useState(false);
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-
-  useEffect(() => {
-    const updateYear = () => setCurrentYear(new Date().getFullYear());
-    updateYear();
-    const timer = setInterval(updateYear, 365 * 24 * 60 * 60 * 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const currentYear = new Date().getFullYear();
 
   const handlePlayIntro = () => {
     if (import.meta.env.VITE_INTRO_VIDEO_URL) {
