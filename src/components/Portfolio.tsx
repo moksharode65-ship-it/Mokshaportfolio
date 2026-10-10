@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
-import { Play, Menu, ExternalLink } from "lucide-react";
+import { Play, Menu, X, ExternalLink } from "lucide-react";
 import Logo from "./Logo";
 import AmbientBackground from "./AmbientBackground";
 
 const GITHUB_URL = "https://github.com/moksharode65-ship-it";
 
 const NAV_LINKS = [
-  { label: "ABOUT", href: "#" },
-  { label: "SKILLS", href: "#" },
+  { label: "ABOUT", href: "#about" },
+  { label: "SKILLS", href: "#skills" },
   { label: "PROJECTS", href: GITHUB_URL },
-  { label: "EXPERIENCE", href: "#" },
-  { label: "EDUCATION", href: "#" },
+  { label: "EXPERIENCE", href: "#experience" },
+  { label: "EDUCATION", href: "#education" },
   { label: "CONTACT", href: "mailto:moksharode65@gmail.com" },
 ];
 
@@ -41,7 +41,7 @@ export default function Portfolio() {
     updateYear();
     const timer = setInterval(updateYear, 365 * 24 * 60 * 60 * 1000);
     return () => clearInterval(timer);
-  }, [menuOpen, currentYear]);
+  }, []);
 
   const handlePlayIntro = () => {
     if (import.meta.env.VITE_INTRO_VIDEO_URL) {
@@ -91,10 +91,41 @@ export default function Portfolio() {
             <Menu size={24} />
           </button>
         </nav>
+        <div
+          className={`fixed inset-0 z-50 bg-black/95 px-5 py-6 backdrop-blur transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+          aria-hidden={!menuOpen}
+        >
+          <div className="flex items-center justify-between">
+            <Logo />
+            <button
+              type="button"
+              className="p-2 transition-opacity hover:opacity-70"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close menu"
+            >
+              <X size={24} />
+            </button>
+          </div>
+          <div className="mt-12 flex flex-col gap-6 text-sm tracking-wide">
+            {NAV_LINKS.map(({ label, href }, i) => (
+              <a
+                key={`mobile-${label}`}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                onClick={() => setMenuOpen(false)}
+                className={`transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
+                style={{ transitionDelay: menuOpen ? `${100 + i * 60}ms` : "0ms" }}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+        </div>
 
         {/* META GRID */}
-        <div className="mt-4 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 lg:gap-8">
-          <div>
+        <div id="about" className="mt-4 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 lg:gap-8">
+          <div id="skills">
             <h2 className="text-lg leading-tight tracking-wide md:text-xl">
               <span className="block font-normal">MOKSHA</span>
               <span className="font-pixel block text-2xl md:text-3xl">RODE</span>
@@ -118,7 +149,7 @@ export default function Portfolio() {
             </h2>
           </div>
 
-          <div>
+          <div id="experience">
             <p className="font-pixel mb-3 text-base uppercase tracking-widest text-white/50">
               What I Do
             </p>
@@ -128,7 +159,7 @@ export default function Portfolio() {
             </p>
           </div>
 
-          <div className="text-right lg:text-left">
+          <div id="education" className="text-right lg:text-left">
             <p className="font-pixel mb-3 text-base uppercase tracking-widest text-white/50">
               Services
             </p>
@@ -205,11 +236,7 @@ export default function Portfolio() {
           <div className="mt-4 grid grid-cols-1 gap-2 border-t border-white/10 pt-4 sm:mt-5 sm:grid-cols-2 sm:gap-4">
             <p className="text-xs text-white/60">
               Open to internships, freelance or entry-level roles.
-              <a href="mailto:moksharode65@gmail.com" className="text-red-500 transition-colors hover:text-red-400">Get in touch</a>
-            </p>
-            <p className="text-xs text-white/60">
-              Open to internships, freelance or entry-level roles.
-              <a href="mailto:moksharode65@gmail.com" className="text-red-500 transition-colors hover:text-red-400">Get in touch</a>
+              <a href="mailto:moksharode65@gmail.com" className="text-red-500 transition-colors hover:text-red-400"> Get in touch</a>
             </p>
             <p className="text-xs text-white/60 sm:text-right">
               B.Tech IT '28 &bull; A. C. Patil College of Engineering &bull; Mumbai, India
