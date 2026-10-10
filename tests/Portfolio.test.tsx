@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Portfolio from "../src/components/Portfolio";
 
 describe("Portfolio landing page", () => {
@@ -15,7 +15,7 @@ describe("Portfolio landing page", () => {
     render(<Portfolio />);
     const navLinks = ["ABOUT", "SKILLS", "PROJECTS", "EXPERIENCE", "EDUCATION", "CONTACT"];
     navLinks.forEach((label) => {
-      expect(screen.getByText(label)).toBeInTheDocument();
+      expect(screen.getAllByText(label).length).toBeGreaterThan(0);
     });
   });
 
@@ -28,6 +28,14 @@ describe("Portfolio landing page", () => {
         "https://github.com/moksharode65-ship-it",
       );
     });
+  });
+
+  it("uses section anchors for internal nav links", () => {
+    render(<Portfolio />);
+    expect(screen.getAllByText("ABOUT")[0].closest("a")).toHaveAttribute("href", "#about");
+    expect(screen.getAllByText("SKILLS")[0].closest("a")).toHaveAttribute("href", "#skills");
+    expect(screen.getAllByText("EXPERIENCE")[0].closest("a")).toHaveAttribute("href", "#experience");
+    expect(screen.getAllByText("EDUCATION")[0].closest("a")).toHaveAttribute("href", "#education");
   });
 
   it("links featured project names to their live deployments", () => {
@@ -80,5 +88,14 @@ describe("Portfolio landing page", () => {
   it("renders the PLAY INTRO button", () => {
     render(<Portfolio />);
     expect(screen.getByText("PLAY INTRO")).toBeInTheDocument();
+  });
+
+  it("opens and closes the mobile menu", () => {
+    render(<Portfolio />);
+    const openButton = screen.getByRole("button", { name: "Open menu" });
+    fireEvent.click(openButton);
+    expect(screen.getByRole("button", { name: "Close menu" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Close menu" }));
+    expect(screen.queryByRole("button", { name: "Close menu" })).not.toBeInTheDocument();
   });
 });
