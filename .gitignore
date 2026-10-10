@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+*.local
+
+# Environment variables (never commit the real .env!)
+.env
+
+# Coverage reports
+coverage/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# TypeScript temporary files
+*.tsbuildinfo
